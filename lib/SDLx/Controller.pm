@@ -11,6 +11,7 @@ use SDL::Video  ();
 use SDLx::Controller::Interface;
 use SDLx::Controller::State;
 use Scalar::Util 'refaddr';
+use Data::Dumper;
 
 our $VERSION = '2.541_10';
 $VERSION = eval $VERSION;
@@ -162,6 +163,7 @@ sub _pause {
 	my $callback     = $_paused{$ref};
 
 	do {
+
 		SDL::Events::pump_events(); # don't know if we need this
 		SDL::Events::wait_event($event) or Carp::confess("pause failed waiting for an event");
 		$stop_handler->( $event, $self ) if $stop_handler;
@@ -193,6 +195,9 @@ sub _event {
 	my ( $self, $ref, $event_handlers ) = @_;
 	my $stop_handler = $_stop_handler{$ref};
 	my $event        = $_event{$ref};
+
+	warn "Event loop runs";
+	warn SDL::get_error();
 
 	SDL::Events::pump_events();
 	while ( SDL::Events::poll_event($event) ) {
