@@ -196,13 +196,7 @@ sub _event {
 	my $stop_handler = $_stop_handler{$ref};
 	my $event        = $_event{$ref};
 
-	warn "Event loop runs";
-	warn SDL::get_error();
-
-	SDL::Events::pump_events();
-	warn "Event pumping event " . Dumper($event);
 	while ( SDL::Events::poll_event($event) ) {
-		warn "Event polling event" . Dumper($event);
 		$stop_handler->( $event, $self ) if $stop_handler;
 		foreach my $event_handler (@$event_handlers) {
 			next unless $event_handler;

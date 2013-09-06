@@ -11,7 +11,7 @@ use SDL::TestTool;
 my $videodriver = $ENV{SDL_VIDEODRIVER};
 $ENV{SDL_VIDEODRIVER} = 'dummy';
 
-my $dummy = SDLx::App->new( init => SDL_INIT_EVERYTHING );
+my $dummy = SDLx::App->new( init => SDL_INIT_VIDEO );
 
 my $event = SDL::Event->new();
 
