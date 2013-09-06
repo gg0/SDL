@@ -83,12 +83,11 @@ my $eve = SDL::Event->new();
 SDL::Events::push_event($eve);
 my $counts = [ 0, 0, 0 ];
 
-warn "Pushing event: " . SDL::get_error();
+warn "Pushing event: " . $eve->type;
 
 $controller->add_event_handler(
 	sub {
-		warn "Event pushed was processed";
-		warn Dumper \@_;
+		warn Dumper $_[0]->type;
 		$counts->[0]++;
 		return 0;
 	}
