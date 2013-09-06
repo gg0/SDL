@@ -15,6 +15,8 @@ my $dummy = SDLx::App->new( init => SDL_INIT_VIDEO );
 
 my $event = SDL::Event->new();
 
+   $event->type(SDL_USEREVENT);
+
 SDL::Events::push_event( $event );
 
 
