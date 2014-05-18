@@ -6,6 +6,10 @@
 #include "defines.h"
 #include "helper.h"
 
+#ifndef aTHX_
+#define aTHX_
+#endif
+
 #include <SDL.h>
 
 #ifdef HAVE_SDL_MIXER
@@ -24,11 +28,7 @@ static SV * cb = (SV*)NULL;
 
 void callback(int channel)
 {
-	dTHX;
-	if(!aTHX) {
-		PERL_SET_CONTEXT(parent_perl);
-	}
-
+	PERL_SET_CONTEXT(parent_perl);
 	dSP;
 	ENTER;
 	SAVETMPS;
@@ -214,8 +214,13 @@ mixchan_get_chunk(chan)
 		char* CLASS = "SDL::Mixer::MixChunk";
 	CODE:
 		Mix_Chunk *chunk = Mix_GetChunk(chan);
+#ifdef _WIN32
+		Mix_Chunk *copy  = msvcrt_malloc(sizeof(Mix_Chunk));
+		copy->abuf       = msvcrt_malloc( chunk->alen );
+#else
 		Mix_Chunk *copy  = malloc(sizeof(Mix_Chunk));
 		copy->abuf       = malloc( chunk->alen );
+#endif
 		memcpy( copy->abuf, chunk->abuf, chunk->alen );
 		copy->alen       = chunk->alen;
 		copy->volume     = chunk->volume;
